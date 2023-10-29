@@ -1,0 +1,47 @@
+.login-main {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+
+    text-align: center;
+    height: 50%;
+    width: 50%;
+
+    border-radius: 20%;
+
+    background-color: paleturquoise;
+
+    font-size: 30px;
+
+    border: 5px solid black;
+    box-shadow: 0 0 10px black;
+}
+
+.login-content * {
+    font-size: 30px;
+    margin: 5px;
+    padding: 5px;
+
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.login-input {
+    border: 2px solid black;
+    border-radius: 3px;
+    outline: none;
+}
+
+.login-button {
+    background-color: white;
+    border-radius: 3px;
+    border: 2px solid black;
+}
+
+.login-button:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
+
+

@@ -1,0 +1,46 @@
+.game-selector-main {
+    width: 100%;
+    height: 100%;
+
+    background-color: paleturquoise;
+
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+    text-align: center;
+}
+
+.game-selector-main > div {
+    border: 5px solid black;
+    margin: 10%;
+
+    display: grid;
+    grid-template-rows: max-content auto;
+
+    background-color: white;
+
+    cursor: pointer;
+}
+
+.buffalo-card:hover, .tripoley-card:hover, .mexican-train-card:hover{
+    box-shadow: 0 0 30px lightgoldenrodyellow;
+}
+
+.game-selector-main > div > h1{
+    border-bottom: 5px solid black;
+    padding-bottom: 5px;
+}
+
+.game-selector-main > div > div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+
+ }
+
+.game-selector-main > div > div > img{
+   width: 100%;
+   height: auto;
+}
