@@ -24,7 +24,7 @@ func main() {
 	router.HandleFunc("/getGameData", handlers.GetServerData(GAME)).Methods("GET")
 	router.HandleFunc("/setGameData", handlers.SetServerData(GAME)).Methods("PUT")
 
-	router.Use(handlers.Middleware)
+	router.Use(handlers.Middleware())
 
 	http.ListenAndServe("127.0.0.1:8080", router)
 }

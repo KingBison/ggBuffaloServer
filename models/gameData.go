@@ -6,6 +6,9 @@ type GameData struct {
 	Players     []Player `json:"players"`
 	TurnPointer string   `json:"turnPointer"`
 
+	TopOfDiscard Card `json:"topOfDiscard"`
+	DrawnCard    Card `json:"drawnCard"`
+
 	Flags Flags `json:"flags"`
 }
 
