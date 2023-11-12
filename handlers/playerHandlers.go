@@ -15,6 +15,7 @@ func HandlePlayerEntry(GAME *models.GameData) http.HandlerFunc {
 		if err != nil {
 			GAME.Players = append(GAME.Players, models.Player{
 				Name: nameParam,
+				Hand: []models.Card{},
 			})
 			log.Printf("%s has entered the game", nameParam)
 			return
