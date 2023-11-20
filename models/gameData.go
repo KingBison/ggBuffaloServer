@@ -16,6 +16,7 @@ type Flags struct {
 	// overall game
 	GameActive bool `json:"gameActive"`
 	PreGame    bool `json:"preGame"`
+	Resolution bool `json:"resolution"`
 
 	// while game active
 	Drawing       bool `json:"drawing"`
