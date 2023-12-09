@@ -19,7 +19,7 @@ func HandlePlayerRequest(GAME *models.GameData) http.HandlerFunc {
 			return
 		}
 
-		err := helpers.ProcessPlayerAction(GAME, name, action)
+		err := helpers.ProcessPlayerAction(GAME, name, action, params)
 
 		if err != nil {
 			w.WriteHeader(400)

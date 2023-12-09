@@ -3,8 +3,9 @@ package models
 type GameData struct {
 	CreatedDate string `json:"createdDate"`
 
-	Players     []Player `json:"players"`
-	TurnPointer string   `json:"turnPointer"`
+	Players        []Player `json:"players"`
+	TurnPointer    string   `json:"turnPointer"`
+	StarterPointer string   `json:"starterPointer"`
 
 	TopOfDiscard Card `json:"topOfDiscard"`
 	DrawnCard    Card `json:"drawnCard"`

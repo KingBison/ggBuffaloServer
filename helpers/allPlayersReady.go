@@ -10,3 +10,9 @@ func allPlayersReady(GAME *models.GameData) bool {
 	}
 	return true
 }
+
+func resetPlayerReady(GAME *models.GameData) {
+	for i := range GAME.Players {
+		GAME.Players[i].Ready = false
+	}
+}
