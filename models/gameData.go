@@ -1,7 +1,10 @@
 package models
 
 type GameData struct {
-	CreatedDate string `json:"createdDate"`
+	GameId     string `json:"gameId"`
+	Creator    string `json:"creator"`
+	Restricted bool   `json:"restricted"`
+	Password   string `json:"password"`
 
 	Players        []Player `json:"players"`
 	TurnPointer    string   `json:"turnPointer"`
@@ -24,9 +27,11 @@ type Flags struct {
 	Deciding      bool `json:"deciding"`
 	Discarded     bool `json:"discarded"`
 	BuffaloCalled bool `json:"buffaloCalled"`
+	TurnsLeft     int  `json:"turnsLeft"`
 
 	// face card flags
-	JackAction  bool `json:"jackAction"`
-	QueenAction bool `json:"queenAction"`
-	KingAction  bool `json:"kingAction"`
+	JackAction   bool `json:"jackAction"`
+	QueenAction  bool `json:"queenAction"`
+	QueenSwapped bool `json:"queenSwapped"`
+	KingAction   bool `json:"kingAction"`
 }

@@ -1,42 +1,47 @@
 package handlers
 
 import (
-	"gg-buffalo-server/helpers"
 	"gg-buffalo-server/models"
-	"log"
 	"net/http"
 )
 
-func HandlePlayerEntry(GAME *models.GameData) http.HandlerFunc {
+func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		nameParam := r.URL.Query().Get("name")
+		params := r.URL.Query()
 
-		player, err := helpers.GetPlayer(nameParam, GAME)
-		if err != nil {
-			GAME.Players = append(GAME.Players, models.Player{
-				Name: nameParam,
-				Hand: []models.Card{},
-			})
-			log.Printf("%s has entered the game", nameParam)
+		gameId := params.Get("gameId")
+
+		name := params.Get("name")
+		color := params.Get("color")
+
+		if name == "" || color == "" || gameId == "" {
+			w.WriteHeader(400)
+			w.Write([]byte("error retrieving params"))
 			return
 		}
 
-		log.Printf("%s has re-entered the game", player.Name)
-
-	}
-}
-
-func HandlePlayerExit(GAME *models.GameData) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		nameParam := r.URL.Query().Get("name")
-
-		err := helpers.RemovePlayer(nameParam, GAME)
-		if err != nil {
-			log.Println("ERROR: ", err)
-			w.WriteHeader(500)
+		for i, game := range *GAMES {
+			if game.GameId == gameId {
+				for k, player := range game.Players {
+					if player.Name == name {
+						(*GAMES)[i].Players[k].Color = color
+						w.WriteHeader(200)
+						w.Write([]byte("re-entered game"))
+						return
+					}
+				}
+				(*GAMES)[i].Players = append((*GAMES)[0].Players, models.Player{
+					Name:  name,
+					Color: color,
+					Hand:  []models.Card{},
+				})
+				w.WriteHeader(200)
+				w.Write([]byte("entered game"))
+				return
+			}
 		}
 
-		log.Printf("%s has exited the game", nameParam)
-
+		w.WriteHeader(500)
+		w.Write([]byte("game not found"))
 	}
 }

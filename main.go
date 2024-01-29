@@ -5,29 +5,23 @@ import (
 	"gg-buffalo-server/models"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
 
-var GAME = &models.GameData{}
-
-func init() {
-	GAME.CreatedDate = time.Now().Format(time.RFC3339)
-}
+var GAMES = &[]models.GameData{}
 
 func main() {
 	log.Println("gray-gaming buffalo server starting up...")
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/getGameData", handlers.GetServerData(GAME)).Methods("GET")
-	router.HandleFunc("/setGameData", handlers.SetServerData(GAME)).Methods("PUT")
+	// game routes
+	router.HandleFunc("/getGames", handlers.GetGames(GAMES)).Methods("GET")
+	router.HandleFunc("/createGame", handlers.CreateGame(GAMES)).Methods("POST")
 
-	router.HandleFunc("/handlePlayerEntry", handlers.HandlePlayerEntry(GAME)).Methods("GET")
-	router.HandleFunc("/handlePlayerExit", handlers.HandlePlayerExit(GAME)).Methods("GET")
-
-	router.HandleFunc("/handlePlayerRequest", handlers.HandlePlayerRequest(GAME)).Methods("GET")
+	// player routes
+	router.HandleFunc("/handlePlayerEntry", handlers.HandlePlayerEntry(GAMES)).Methods("GET")
 
 	router.Use(handlers.Middleware())
 
