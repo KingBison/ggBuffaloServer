@@ -14,6 +14,8 @@ func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 		name := params.Get("name")
 		color := params.Get("color")
 
+		password := params.Get("password")
+
 		if name == "" || color == "" || gameId == "" {
 			w.WriteHeader(400)
 			w.Write([]byte("error retrieving params"))
@@ -29,6 +31,11 @@ func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 						w.Write([]byte("re-entered game"))
 						return
 					}
+				}
+				if game.Restricted && game.Password != password {
+					w.WriteHeader(404)
+					w.Write([]byte("passoword incorrect"))
+					return
 				}
 				(*GAMES)[i].Players = append((*GAMES)[0].Players, models.Player{
 					Name:  name,

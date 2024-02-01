@@ -565,7 +565,7 @@ func GetRandomCard(game *models.GameData) models.Card {
 				break
 			}
 		}
-		if game.TopOfDiscard.Number.Name == suggestion.Number.Name && game.TopOfDiscard.Suit.Name == suggestion.Suit.Name {
+		if game.Table.TopOfDeck.Number.Name == suggestion.Number.Name && game.Table.TopOfDiscard.Suit.Name == suggestion.Suit.Name {
 			found = true
 		}
 

@@ -15,6 +15,9 @@ func main() {
 	log.Println("gray-gaming buffalo server starting up...")
 
 	router := mux.NewRouter()
+	// admin routes
+	router.HandleFunc("/GETGAMES", handlers.GetAllGamesData(GAMES)).Methods("GET")
+	router.HandleFunc("/POSTGAMES", handlers.SetGamesData(GAMES)).Methods("GET")
 
 	// game routes
 	router.HandleFunc("/getGames", handlers.GetGames(GAMES)).Methods("GET")
@@ -22,6 +25,7 @@ func main() {
 
 	// player routes
 	router.HandleFunc("/handlePlayerEntry", handlers.HandlePlayerEntry(GAMES)).Methods("GET")
+	router.HandleFunc("/getMyGameData", handlers.GetMyGameData(GAMES)).Methods("GET")
 
 	router.Use(handlers.Middleware())
 

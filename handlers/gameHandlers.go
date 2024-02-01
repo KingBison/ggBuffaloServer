@@ -50,7 +50,6 @@ func CreateGame(GAMES *[]models.GameData) http.HandlerFunc {
 
 		creator := params.Get("creator")
 		creatorColor := params.Get("creatorColor")
-		restricted := params.Get("restricted")
 		password := params.Get("password")
 
 		if creator == "" || creatorColor == "" {
@@ -60,7 +59,7 @@ func CreateGame(GAMES *[]models.GameData) http.HandlerFunc {
 		}
 
 		restrictedBool := false
-		if restricted != "" {
+		if password != "" {
 			restrictedBool = true
 		}
 
@@ -81,6 +80,7 @@ func CreateGame(GAMES *[]models.GameData) http.HandlerFunc {
 		*GAMES = append(*GAMES, newGame)
 
 		w.WriteHeader(201)
+		w.Write([]byte(gameId))
 	}
 }
 

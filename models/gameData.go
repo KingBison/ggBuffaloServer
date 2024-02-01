@@ -1,37 +1,36 @@
 package models
 
 type GameData struct {
+	// Base Components
 	GameId     string `json:"gameId"`
 	Creator    string `json:"creator"`
 	Restricted bool   `json:"restricted"`
 	Password   string `json:"password"`
 
-	Players        []Player `json:"players"`
-	TurnPointer    string   `json:"turnPointer"`
-	StarterPointer string   `json:"starterPointer"`
+	// Players
+	Players []Player `json:"players"`
 
-	TopOfDiscard Card `json:"topOfDiscard"`
-	DrawnCard    Card `json:"drawnCard"`
+	// Board Values
+	Table Table `json:"table"`
 
-	Flags Flags `json:"flags"`
+	// Phase Values
+	Started bool `json:"started"`
+	Active  bool `json:"active"`
 }
 
-type Flags struct {
-	// overall game
-	GameActive bool `json:"gameActive"`
-	PreGame    bool `json:"preGame"`
-	Resolution bool `json:"resolution"`
+type OutgoingGameData struct {
+	You          Player    `json:"you"`
+	OtherPlayers []Player  `json:"otherPlayers"`
+	Table        Table     `json:"table"`
+	OtherData    OtherData `json:"otherData"`
+}
 
-	// while game active
-	Drawing       bool `json:"drawing"`
-	Deciding      bool `json:"deciding"`
-	Discarded     bool `json:"discarded"`
+type Table struct {
+	TopOfDeck    Card `json:"topOfDeck"`
+	TopOfDiscard Card `json:"topOfDiscard"`
+}
+
+type OtherData struct {
 	BuffaloCalled bool `json:"buffaloCalled"`
 	TurnsLeft     int  `json:"turnsLeft"`
-
-	// face card flags
-	JackAction   bool `json:"jackAction"`
-	QueenAction  bool `json:"queenAction"`
-	QueenSwapped bool `json:"queenSwapped"`
-	KingAction   bool `json:"kingAction"`
 }
