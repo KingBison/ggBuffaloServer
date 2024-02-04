@@ -75,6 +75,8 @@ func CreateGame(GAMES *[]models.GameData) http.HandlerFunc {
 					Hand:  []models.Card{},
 				},
 			},
+			StarterIndex: -1,
+			TurnIndex:    -1,
 		}
 
 		*GAMES = append(*GAMES, newGame)

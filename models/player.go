@@ -10,4 +10,6 @@ type Player struct {
 	Hand []Card `json:"hand"`
 
 	Ready bool `json:"ready"`
+
+	TurnIndicator bool `json:"turnIndicator"`
 }

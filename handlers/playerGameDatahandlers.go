@@ -25,7 +25,11 @@ func GetMyGameData(GAMES *[]models.GameData) http.HandlerFunc {
 			if game.GameId == gameId {
 				for k, player := range game.Players {
 					if player.Name == name {
-						outgoingGameData, err := helpers.GetPlayerGameData((*GAMES)[i], (*GAMES)[i].Players[k])
+						GameCopyData, _ := json.Marshal((*GAMES)[i])
+						GameCopy := models.GameData{}
+						_ = json.Unmarshal(GameCopyData, &GameCopy)
+
+						outgoingGameData, err := helpers.GetPlayerGameData(GameCopy, GameCopy.Players[k])
 						if err != nil {
 							w.WriteHeader(500)
 							w.Write([]byte(err.Error()))

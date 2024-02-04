@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"gg-buffalo-server/helpers"
 	"gg-buffalo-server/models"
 	"net/http"
 )
@@ -44,6 +45,45 @@ func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 				})
 				w.WriteHeader(200)
 				w.Write([]byte("entered game"))
+				return
+			}
+		}
+
+		w.WriteHeader(500)
+		w.Write([]byte("game not found"))
+	}
+}
+
+func HandleRequest(GAMES *[]models.GameData) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := r.URL.Query()
+
+		gameId := params.Get("gameId")
+		name := params.Get("name")
+
+		if name == "" || gameId == "" {
+			w.WriteHeader(400)
+			w.Write([]byte("error retrieving params"))
+			return
+		}
+
+		for i, game := range *GAMES {
+			if game.GameId == gameId {
+				for k, player := range game.Players {
+					if player.Name == name {
+						err := helpers.HandleRequest(&(*GAMES)[i], &(*GAMES)[i].Players[k], params)
+						if err != nil {
+							w.WriteHeader(500)
+							w.Write([]byte(err.Error()))
+							return
+						}
+						helpers.UpdateGame(&(*GAMES)[i])
+						w.WriteHeader(200)
+						return
+					}
+				}
+				w.WriteHeader(500)
+				w.Write([]byte("player not found"))
 				return
 			}
 		}

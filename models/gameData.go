@@ -10,12 +10,25 @@ type GameData struct {
 	// Players
 	Players []Player `json:"players"`
 
+	StarterIndex int `json:"starterIndex"`
+	TurnIndex    int `json:"turnIndex"`
+
 	// Board Values
 	Table Table `json:"table"`
 
 	// Phase Values
-	Started bool `json:"started"`
-	Active  bool `json:"active"`
+	Active        bool `json:"active"`
+	Peeking       bool `json:"peeking"`
+	Drawing       bool `json:"drawing"`
+	Deciding      bool `json:"deciding"`
+	Discarded     bool `json:"discarded"`
+	QueenAction   bool `json:"queenAction"`
+	JackIndicator bool `json:"jackIndicator"`
+	KingIndicator bool `json:"kingIndicator"`
+
+	Resolution bool `json:"resolution"`
+
+	OtherData OtherData `json:"otherData"`
 }
 
 type OutgoingGameData struct {
@@ -31,6 +44,8 @@ type Table struct {
 }
 
 type OtherData struct {
-	BuffaloCalled bool `json:"buffaloCalled"`
-	TurnsLeft     int  `json:"turnsLeft"`
+	BuffaloCalled   bool `json:"buffaloCalled"`
+	BuffaloCallable bool `json:"buffaloCallable"`
+	TurnsLeft       int  `json:"turnsLeft"`
+	CanQueenSwap    bool `json:"canQueenSwap"`
 }

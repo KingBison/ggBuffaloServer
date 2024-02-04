@@ -13,19 +13,20 @@ type Card struct {
 	Drawable    bool `json:"drawable"`
 	Discardable bool `json:"discardable"`
 
-	Swappable bool `json:"swappable"`
-	Slammable bool `json:"slammable"`
+	Slammable     bool `json:"slammable"`
+	Slammed       bool `json:"slammed"`
+	FailedSlammed bool `json:"failedSlammed"`
 
-	Swapped bool `json:"swapped"`
-	Slammed bool `json:"slammed"`
+	Swappable bool `json:"swappable"`
+	Swapped   bool `json:"swapped"`
 	// Face Card Flags
-	KingSelectable  bool `json:"kingSelectable"`
+	KingPeekable    bool `json:"kingPeekable"`
 	QueenSelectable bool `json:"queenSelectable"`
 
-	KingSelected  bool `json:"kingSelected"`
+	KingPeeked    bool `json:"kingPeeked"`
 	QueenSelected bool `json:"queenSelected"`
 
-	QueenUnSelectable bool `json:"queenUnSelected"`
+	QueenUnSelectable bool `json:"queenUnSelectable"`
 }
 
 type Suit struct {

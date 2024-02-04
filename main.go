@@ -26,6 +26,7 @@ func main() {
 	// player routes
 	router.HandleFunc("/handlePlayerEntry", handlers.HandlePlayerEntry(GAMES)).Methods("GET")
 	router.HandleFunc("/getMyGameData", handlers.GetMyGameData(GAMES)).Methods("GET")
+	router.HandleFunc("/handleRequest", handlers.HandleRequest(GAMES)).Methods("GET")
 
 	router.Use(handlers.Middleware())
 
