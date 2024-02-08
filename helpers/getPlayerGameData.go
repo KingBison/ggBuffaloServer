@@ -19,7 +19,9 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 			You:          PLAYER,
 			OtherPlayers: outgoingOtherPlayers,
 			Table:        outgoingTable,
-			OtherData:    models.OtherData{},
+			OtherData: models.OtherData{
+				CanReadyUp: true,
+			},
 		}, nil
 	}
 
@@ -41,6 +43,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 			Table:        outgoingTable,
 			OtherData: models.OtherData{
 				BuffaloCalled: false,
+				CanReadyUp:    true,
 			},
 		}, nil
 	}
@@ -71,6 +74,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
 				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
+				CanReadyUp:      false,
 			},
 		}, nil
 
@@ -110,6 +114,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
 				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
+				CanReadyUp:      false,
 			},
 		}, nil
 
@@ -145,6 +150,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
 				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
+				CanReadyUp:      true,
 			},
 		}, nil
 
@@ -184,6 +190,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
 				CanQueenSwap:    (outGoingYou.TurnIndicator && getQueenSelectCapOut(GAME)),
+				CanReadyUp:      false,
 			},
 		}, nil
 
@@ -208,7 +215,9 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
 			Table:        outgoingTable,
-			OtherData:    models.OtherData{},
+			OtherData: models.OtherData{
+				CanReadyUp: true,
+			},
 		}, nil
 
 	}

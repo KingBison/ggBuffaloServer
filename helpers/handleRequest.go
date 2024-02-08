@@ -59,7 +59,9 @@ func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Valu
 			return errors.New("indexing error")
 		}
 		if PLAYER.Hand[cardI].Number.Name == GAME.Table.TopOfDiscard.Number.Name {
+			GAME.Table.TopOfDiscard = PLAYER.Hand[cardI]
 			PLAYER.Hand[cardI].Slammed = true
+			PLAYER.Hand[cardI].QueenSelected = false
 		} else {
 			PLAYER.Hand[cardI].FailedSlammed = true
 			PLAYER.Hand = append(PLAYER.Hand, GetRandomCard(GAME))
@@ -79,11 +81,7 @@ func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Valu
 		GAME.Table.TopOfDiscard = GAME.Table.TopOfDeck
 		GAME.Table.TopOfDeck = models.Card{}
 		GAME.Deciding = false
-		if GAME.Table.TopOfDiscard.Number.Name == "queen" {
-			GAME.QueenAction = true
-		} else {
-			GAME.Discarded = true
-		}
+		assignFaceCardFlags(GAME)
 		return nil
 	}
 
@@ -97,6 +95,8 @@ func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Valu
 		}
 		GAME.Table.TopOfDiscard = PLAYER.Hand[cardI]
 		PLAYER.Hand[cardI] = GAME.Table.TopOfDeck
+		PLAYER.Hand[cardI].Swapped = true
+		GAME.Table.TopOfDeck = models.Card{}
 		GAME.Deciding = false
 		assignFaceCardFlags(GAME)
 		return nil

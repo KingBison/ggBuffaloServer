@@ -28,6 +28,7 @@ func UpdateGame(GAME *models.GameData) {
 			GAME.Resolution = false
 			GAME.Peeking = true
 			GAME.Active = true
+			GAME.Table.TopOfDiscard = models.Card{Empty: true}
 			makeAllPlayersNotReady(GAME)
 		}
 		return

@@ -48,4 +48,5 @@ type OtherData struct {
 	BuffaloCallable bool `json:"buffaloCallable"`
 	TurnsLeft       int  `json:"turnsLeft"`
 	CanQueenSwap    bool `json:"canQueenSwap"`
+	CanReadyUp      bool `json:"canReadyUp"`
 }
