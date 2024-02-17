@@ -25,6 +25,7 @@ type Card struct {
 
 	KingPeeked    bool `json:"kingPeeked"`
 	QueenSelected bool `json:"queenSelected"`
+	QueenSwapped  bool `json:"queenSwapped"`
 
 	QueenUnSelectable bool `json:"queenUnSelectable"`
 }

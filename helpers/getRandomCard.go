@@ -5,572 +5,129 @@ import (
 	"math/rand"
 )
 
-var DECK = []models.Card{
+var SUITS = []models.Suit{
 	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "ace",
-			Value: 1,
-		},
+		Name:  "clubs",
+		Value: 0,
 	},
 	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "two",
-			Value: 2,
-		},
+		Name:  "diamonds",
+		Value: 0,
 	},
 	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "three",
-			Value: 3,
-		},
+		Name:  "hearts",
+		Value: 0,
 	},
 	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "four",
-			Value: 4,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "five",
-			Value: 5,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "six",
-			Value: 6,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "seven",
-			Value: 7,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "eight",
-			Value: 8,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "nine",
-			Value: 9,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "ten",
-			Value: 10,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "jack",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "queen",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "clubs",
-			Value: 0,
-		},
-		Number: models.Number{
-			Name:  "king",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "ace",
-			Value: 1,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "two",
-			Value: 2,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "three",
-			Value: 3,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "four",
-			Value: 4,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "five",
-			Value: 5,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "six",
-			Value: 6,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "seven",
-			Value: 7,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "eight",
-			Value: 8,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "nine",
-			Value: 9,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "ten",
-			Value: 10,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "jack",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "queen",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "diamonds",
-			Value: 1,
-		},
-		Number: models.Number{
-			Name:  "king",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "ace",
-			Value: 1,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "two",
-			Value: 2,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "three",
-			Value: 3,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "four",
-			Value: 4,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "five",
-			Value: 5,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "six",
-			Value: 6,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "seven",
-			Value: 7,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "eight",
-			Value: 8,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "nine",
-			Value: 9,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "ten",
-			Value: 10,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "jack",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "queen",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "hearts",
-			Value: 2,
-		},
-		Number: models.Number{
-			Name:  "king",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "ace",
-			Value: 1,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "two",
-			Value: 2,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "three",
-			Value: 3,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "four",
-			Value: 4,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "five",
-			Value: 5,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "six",
-			Value: 6,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "seven",
-			Value: 7,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "eight",
-			Value: 8,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "nine",
-			Value: 9,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "ten",
-			Value: 10,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "jack",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "queen",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "spades",
-			Value: 3,
-		},
-		Number: models.Number{
-			Name:  "king",
-			Value: 15,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "joker",
-			Value: 4,
-		},
-		Number: models.Number{
-			Name:  "joker",
-			Value: 0,
-		},
-	},
-	{
-		Suit: models.Suit{
-			Name:  "joker",
-			Value: 4,
-		},
-		Number: models.Number{
-			Name:  "joker",
-			Value: 0,
-		},
+		Name:  "spades",
+		Value: 0,
 	},
 }
 
-func GetRandomCard(game *models.GameData) models.Card {
-	deckLength := len(DECK)
-	for {
-		randI := rand.Intn(deckLength)
-		suggestion := DECK[randI]
-		found := false
-		for _, player := range game.Players {
-			for _, card := range player.Hand {
-				if card.Number.Name == suggestion.Number.Name && card.Suit.Name == suggestion.Suit.Name {
-					found = true
-					break
-				}
-			}
-			if found == true {
-				break
-			}
-		}
-		if game.Table.TopOfDiscard.Number.Name == suggestion.Number.Name && game.Table.TopOfDiscard.Suit.Name == suggestion.Suit.Name {
-			found = true
-		}
+var NUMBERS = []models.Number{
+	{
+		Name:  "ace",
+		Value: 1,
+	},
+	{
+		Name:  "two",
+		Value: 2,
+	},
+	{
+		Name:  "three",
+		Value: 3,
+	},
+	{
+		Name:  "four",
+		Value: 4,
+	},
+	{
+		Name:  "five",
+		Value: 5,
+	},
+	{
+		Name:  "six",
+		Value: 6,
+	},
+	{
+		Name:  "seven",
+		Value: 7,
+	},
+	{
+		Name:  "eight",
+		Value: 8,
+	},
+	{
+		Name:  "nine",
+		Value: 9,
+	},
+	{
+		Name:  "ten",
+		Value: 10,
+	},
+	{
+		Name:  "jack",
+		Value: 15,
+	},
+	{
+		Name:  "queen",
+		Value: 15,
+	},
+	{
+		Name:  "king",
+		Value: 15,
+	},
+}
 
-		if !found {
+var JOKER = models.Card{
+	Suit: models.Suit{
+		Name:  "joker",
+		Value: 0,
+	},
+	Number: models.Number{
+		Name:  "joker",
+		Value: 0,
+	},
+}
+
+var DECK []models.Card
+
+func init() {
+	for _, suit := range SUITS {
+		for _, number := range NUMBERS {
+			DECK = append(DECK, models.Card{
+				Suit:   suit,
+				Number: number,
+			})
+		}
+	}
+
+	for i := 0; i < 2; i++ {
+		DECK = append(DECK, JOKER)
+	}
+}
+
+func GetRandomCard(game *models.GameData) models.Card {
+	for {
+		suggestion := DECK[rand.Intn(len(DECK))]
+		if !cardIsInPlay(suggestion, *game) {
 			return suggestion
 		}
 	}
+}
+
+func cardIsInPlay(suggestion models.Card, game models.GameData) bool {
+	// check for card in any player's hand
+	for _, player := range game.Players {
+		for _, card := range player.Hand {
+			if card.Number.Name == suggestion.Number.Name && card.Suit.Name == suggestion.Suit.Name {
+				return true
+			}
+		}
+	}
+	// card is on top of discard
+	if game.Table.TopOfDiscard.Number.Name == suggestion.Number.Name && game.Table.TopOfDiscard.Suit.Name == suggestion.Suit.Name {
+		return true
+	}
+	return false
 }

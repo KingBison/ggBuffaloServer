@@ -159,10 +159,11 @@ func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Valu
 		if len(cardsSelected) != 2 {
 			return errors.New("you need to have exactly 2 cards selected")
 		}
+		// SWAP
 		temp := GAME.Players[cardsSelected[0].PlayerIndex].Hand[cardsSelected[0].CardIndex]
 		GAME.Players[cardsSelected[0].PlayerIndex].Hand[cardsSelected[0].CardIndex] = GAME.Players[cardsSelected[1].PlayerIndex].Hand[cardsSelected[1].CardIndex]
 		GAME.Players[cardsSelected[1].PlayerIndex].Hand[cardsSelected[1].CardIndex] = temp
-
+		// GET READY FOR DISCARDED PHASE
 		GAME.QueenAction = false
 		GAME.Discarded = true
 		return nil

@@ -223,3 +223,21 @@ func showAllCards(otherPlayers []models.Player) []models.Player {
 
 	return otherPlayers
 }
+
+func assignYourQueenSwapped(you models.Player) models.Player {
+	for i := range you.Hand {
+		you.Hand[i].QueenSwapped = you.Hand[i].QueenSelected
+	}
+
+	return you
+}
+
+func assignQueenSwapped(otherPlayers []models.Player) []models.Player {
+	for i := range otherPlayers {
+		for k := range otherPlayers[i].Hand {
+			otherPlayers[i].Hand[k].QueenSwapped = otherPlayers[i].Hand[k].QueenSelected
+		}
+	}
+
+	return otherPlayers
+}

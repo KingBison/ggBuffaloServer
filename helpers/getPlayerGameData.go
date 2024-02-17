@@ -5,34 +5,30 @@ import (
 	"gg-buffalo-server/models"
 )
 
+var emptyTable = models.Table{
+	TopOfDeck:    models.Card{Visible: false},
+	TopOfDiscard: models.Card{Empty: true},
+}
+
 func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.OutgoingGameData, error) {
+	// ALWAYS reorder other players
 	outgoingOtherPlayers := reorderoutgoingOtherPlayers(GAME.Players, PLAYER)
+	// bool for turn determination
 
+	// FOR GAME SART
 	if !GAME.Active && !GAME.Resolution {
-		// TABLE
-		outgoingTable := models.Table{
-			TopOfDeck:    models.Card{Visible: false},
-			TopOfDiscard: models.Card{Empty: true},
-		}
-
 		return models.OutgoingGameData{
 			You:          PLAYER,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
-			OtherData: models.OtherData{
-				CanReadyUp: true,
-			},
+			Table:        emptyTable,
+			OtherData:    models.OtherData{CanReadyUp: true},
 		}, nil
 	}
 
+	// FOR PEEKING PHASE
 	if GAME.Peeking {
 		outgoingOtherPlayers = censorOtherPlayersCards(outgoingOtherPlayers)
 		outgoingOtherPlayers = assignOtherPlayersPeekedCards(outgoingOtherPlayers)
-
-		outgoingTable := models.Table{
-			TopOfDeck:    models.Card{Visible: false},
-			TopOfDiscard: models.Card{Empty: true},
-		}
 
 		outGoingYou := showYourPeekedCards(PLAYER)
 		outGoingYou = assignYourPeekableCards(PLAYER)
@@ -40,39 +36,38 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
-			OtherData: models.OtherData{
-				BuffaloCalled: false,
-				CanReadyUp:    true,
-			},
+			Table:        emptyTable,
+			OtherData:    models.OtherData{CanReadyUp: true},
 		}, nil
 	}
+
+	// for when you're drawing
+
+	myTurn := (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)
 
 	if GAME.Drawing {
 		outgoingOtherPlayers = assignFailedSlams(outgoingOtherPlayers)
 		outgoingOtherPlayers = assignTurnPointer(outgoingOtherPlayers, GAME)
 
-		outgoingTable := models.Table{
-			TopOfDeck: models.Card{Visible: false, Drawable: (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)},
-			TopOfDiscard: models.Card{
-				Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
-				Visible: true,
-				Suit:    GAME.Table.TopOfDiscard.Suit,
-				Number:  GAME.Table.TopOfDiscard.Number,
-			},
-		}
-
 		outGoingYou := assignSlammableCards(PLAYER)
 		outGoingYou = assignYourFailedSlams(PLAYER)
-		outGoingYou.TurnIndicator = (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)
+		outGoingYou.TurnIndicator = myTurn
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
+			Table: models.Table{
+				TopOfDeck: models.Card{Visible: false, Drawable: myTurn},
+				TopOfDiscard: models.Card{
+					Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
+					Visible: true,
+					Suit:    GAME.Table.TopOfDiscard.Suit,
+					Number:  GAME.Table.TopOfDiscard.Number,
+				},
+			},
 			OtherData: models.OtherData{
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
-				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
+				BuffaloCallable: (myTurn && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
 				CanReadyUp:      false,
 			},
@@ -84,35 +79,33 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		outgoingOtherPlayers = assignFailedSlams(outgoingOtherPlayers)
 		outgoingOtherPlayers = assignTurnPointer(outgoingOtherPlayers, GAME)
 
-		outgoingTable := models.Table{
-			TopOfDeck: models.Card{
-				Visible: (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name),
-				Suit:    GAME.Table.TopOfDeck.Suit,
-				Number:  GAME.Table.TopOfDeck.Number,
-			},
-			TopOfDiscard: models.Card{
-				Empty:       GAME.Table.TopOfDiscard.Number.Name == "",
-				Visible:     true,
-				Suit:        GAME.Table.TopOfDiscard.Suit,
-				Number:      GAME.Table.TopOfDiscard.Number,
-				Discardable: (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name),
-			},
-		}
-
 		outGoingYou := assignSlammableCards(PLAYER)
 		outGoingYou = assignYourFailedSlams(PLAYER)
-		if GAME.Players[GAME.TurnIndex].Name == PLAYER.Name {
+		if myTurn {
 			outGoingYou = assignSwaps(PLAYER)
 		}
-		outGoingYou.TurnIndicator = (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)
+		outGoingYou.TurnIndicator = myTurn
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
+			Table: models.Table{
+				TopOfDeck: models.Card{
+					Visible: myTurn,
+					Suit:    GAME.Table.TopOfDeck.Suit,
+					Number:  GAME.Table.TopOfDeck.Number,
+				},
+				TopOfDiscard: models.Card{
+					Empty:       GAME.Table.TopOfDiscard.Number.Name == "",
+					Visible:     true,
+					Suit:        GAME.Table.TopOfDiscard.Suit,
+					Number:      GAME.Table.TopOfDiscard.Number,
+					Discardable: myTurn,
+				},
+			},
 			OtherData: models.OtherData{
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
-				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
+				BuffaloCallable: (myTurn && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
 				CanReadyUp:      false,
 			},
@@ -123,32 +116,32 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 	if GAME.Discarded {
 		outgoingOtherPlayers = assignFailedSlams(outgoingOtherPlayers)
 		outgoingOtherPlayers = assignTurnPointer(outgoingOtherPlayers, GAME)
-
-		outgoingTable := models.Table{
-			TopOfDeck: models.Card{},
-			TopOfDiscard: models.Card{
-				Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
-				Visible: true,
-				Suit:    GAME.Table.TopOfDiscard.Suit,
-				Number:  GAME.Table.TopOfDiscard.Number,
-			},
-		}
+		outgoingOtherPlayers = assignQueenSwapped(outgoingOtherPlayers)
 
 		outGoingYou := assignSlammableCards(PLAYER)
-		if (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && GAME.KingIndicator {
+		if myTurn && GAME.KingIndicator {
 			outGoingYou = assignKingPeekable(PLAYER)
 			outGoingYou = assignKingPeeked(PLAYER)
 		}
+		outGoingYou = assignYourQueenSwapped(outGoingYou)
 		outGoingYou = assignYourFailedSlams(PLAYER)
-		outGoingYou.TurnIndicator = (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)
+		outGoingYou.TurnIndicator = myTurn
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
+			Table: models.Table{
+				TopOfDeck: models.Card{},
+				TopOfDiscard: models.Card{
+					Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
+					Visible: true,
+					Suit:    GAME.Table.TopOfDiscard.Suit,
+					Number:  GAME.Table.TopOfDiscard.Number,
+				},
+			},
 			OtherData: models.OtherData{
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
-				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
+				BuffaloCallable: (myTurn && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
 				CanReadyUp:      true,
 			},
@@ -164,32 +157,30 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 			outgoingOtherPlayers = assignQueenSelectableAndUnSelectable(outgoingOtherPlayers, GAME)
 		}
 
-		outgoingTable := models.Table{
-			TopOfDeck: models.Card{},
-			TopOfDiscard: models.Card{
-				Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
-				Visible: true,
-				Suit:    GAME.Table.TopOfDiscard.Suit,
-				Number:  GAME.Table.TopOfDiscard.Number,
-			},
-		}
-
 		outGoingYou := assignSlammableCards(PLAYER)
 		outGoingYou = assignYourFailedSlams(PLAYER)
-		outGoingYou.TurnIndicator = (GAME.Players[GAME.TurnIndex].Name == PLAYER.Name)
-		if outGoingYou.TurnIndicator {
+		outGoingYou.TurnIndicator = myTurn
+		if myTurn {
 			outGoingYou = assignYouQueenSelectableAndUnSelectable(outGoingYou, GAME)
 		}
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
+			Table: models.Table{
+				TopOfDeck: models.Card{},
+				TopOfDiscard: models.Card{
+					Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
+					Visible: true,
+					Suit:    GAME.Table.TopOfDiscard.Suit,
+					Number:  GAME.Table.TopOfDiscard.Number,
+				},
+			},
 			OtherData: models.OtherData{
 				BuffaloCalled:   GAME.OtherData.BuffaloCalled,
-				BuffaloCallable: ((GAME.Players[GAME.TurnIndex].Name == PLAYER.Name) && !GAME.OtherData.BuffaloCalled),
+				BuffaloCallable: (myTurn && !GAME.OtherData.BuffaloCalled),
 				TurnsLeft:       GAME.OtherData.TurnsLeft,
-				CanQueenSwap:    (outGoingYou.TurnIndicator && getQueenSelectCapOut(GAME)),
+				CanQueenSwap:    (myTurn && getQueenSelectCapOut(GAME)),
 				CanReadyUp:      false,
 			},
 		}, nil
@@ -198,23 +189,20 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 
 	if GAME.Resolution {
 		outgoingOtherPlayers = showAllCards(outgoingOtherPlayers)
-
-		outgoingTable := models.Table{
-			TopOfDeck: models.Card{},
-			TopOfDiscard: models.Card{
-				Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
-				Visible: true,
-				Suit:    GAME.Table.TopOfDiscard.Suit,
-				Number:  GAME.Table.TopOfDiscard.Number,
-			},
-		}
-
 		outGoingYou := showAllYourCards(PLAYER)
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
 			OtherPlayers: outgoingOtherPlayers,
-			Table:        outgoingTable,
+			Table: models.Table{
+				TopOfDeck: models.Card{},
+				TopOfDiscard: models.Card{
+					Empty:   GAME.Table.TopOfDiscard.Number.Name == "",
+					Visible: true,
+					Suit:    GAME.Table.TopOfDiscard.Suit,
+					Number:  GAME.Table.TopOfDiscard.Number,
+				},
+			},
 			OtherData: models.OtherData{
 				CanReadyUp: true,
 			},
