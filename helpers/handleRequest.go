@@ -5,6 +5,7 @@ import (
 	"gg-buffalo-server/models"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Values) error {
@@ -41,6 +42,7 @@ func HandleRequest(GAME *models.GameData, PLAYER *models.Player, PARAMS url.Valu
 			return errors.New("2 cards have already been peeked")
 		}
 		PLAYER.Hand[cardI].Peeked = true
+		PLAYER.Hand[cardI].PeekTicker = time.Now()
 		return nil
 	}
 

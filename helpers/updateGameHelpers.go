@@ -56,14 +56,14 @@ func checkForBuffaloCalledEOG(GAME *models.GameData) bool {
 
 		for _, player := range eogPlayers {
 			if player.mainScore < bestScore {
-				WINNERS = []*models.Player{&(*&GAME.Players[player.playerIndex])}
+				WINNERS = []*models.Player{&GAME.Players[player.playerIndex]}
 				bestScore = player.mainScore
 			} else if player.mainScore == bestScore {
 				if player.highestCard > highestCardWithBestScore {
-					WINNERS = []*models.Player{&(*&GAME.Players[player.playerIndex])}
+					WINNERS = []*models.Player{&GAME.Players[player.playerIndex]}
 					highestCardWithBestScore = player.highestCard
 				} else if player.highestCard == highestCardWithBestScore {
-					WINNERS = append(WINNERS, &(*&GAME.Players[player.playerIndex]))
+					WINNERS = append(WINNERS, &GAME.Players[player.playerIndex])
 				}
 			}
 		}

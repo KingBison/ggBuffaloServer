@@ -14,6 +14,7 @@ func UpdateGame(GAME *models.GameData) {
 
 	// check for first turn
 	if GAME.Peeking && allPlayersReady(GAME) {
+		handleFirstTurnAnimations(GAME)
 		handleFirstTurn(GAME)
 		return
 	}

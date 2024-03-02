@@ -1,6 +1,9 @@
 package helpers
 
-import "gg-buffalo-server/models"
+import (
+	"gg-buffalo-server/models"
+	"time"
+)
 
 func reorderoutgoingOtherPlayers(players []models.Player, you models.Player) []models.Player {
 	index := -1
@@ -240,4 +243,28 @@ func assignQueenSwapped(otherPlayers []models.Player) []models.Player {
 	}
 
 	return otherPlayers
+}
+
+//animations
+
+func assignPeekingAnimations(you models.Player) models.Player {
+	currentTime := time.Now()
+	for i, card := range you.Hand {
+		timeDiff := currentTime.Sub(card.PeekTicker).Seconds()
+		if timeDiff < 1.2 {
+			you.Hand[i].PeekAni = true
+		}
+	}
+	return you
+}
+
+func assignUnPeekingAnimations(you models.Player) models.Player {
+	currentTime := time.Now()
+	for i, card := range you.Hand {
+		timeDiff := currentTime.Sub(card.UnPeekTicker).Seconds()
+		if timeDiff < 1.2 {
+			you.Hand[i].UnPeekAni = true
+		}
+	}
+	return you
 }

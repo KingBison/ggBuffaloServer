@@ -1,6 +1,9 @@
 package helpers
 
-import "gg-buffalo-server/models"
+import (
+	"gg-buffalo-server/models"
+	"time"
+)
 
 func handleGameStart(GAME *models.GameData) {
 	// clear all flags from previous and deal
@@ -54,4 +57,16 @@ func handleResolution(GAME *models.GameData) {
 	clearAllGameFlags(GAME)
 	GAME.TurnIndex = -1
 	GAME.Resolution = true
+}
+
+// ANIMATION HANDLERS
+
+func handleFirstTurnAnimations(GAME *models.GameData) {
+	for i, player := range GAME.Players {
+		for k, card := range player.Hand {
+			if card.Peeked {
+				GAME.Players[i].Hand[k].UnPeekTicker = time.Now()
+			}
+		}
+	}
 }

@@ -31,7 +31,8 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		outgoingOtherPlayers = assignOtherPlayersPeekedCards(outgoingOtherPlayers)
 
 		outGoingYou := showYourPeekedCards(PLAYER)
-		outGoingYou = assignYourPeekableCards(PLAYER)
+		outGoingYou = assignYourPeekableCards(outGoingYou)
+		outGoingYou = assignPeekingAnimations(outGoingYou)
 
 		return models.OutgoingGameData{
 			You:          outGoingYou,
@@ -50,7 +51,8 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		outgoingOtherPlayers = assignTurnPointer(outgoingOtherPlayers, GAME)
 
 		outGoingYou := assignSlammableCards(PLAYER)
-		outGoingYou = assignYourFailedSlams(PLAYER)
+		outGoingYou = assignYourFailedSlams(outGoingYou)
+		outGoingYou = assignUnPeekingAnimations(outGoingYou)
 		outGoingYou.TurnIndicator = myTurn
 
 		return models.OutgoingGameData{
@@ -80,7 +82,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		outgoingOtherPlayers = assignTurnPointer(outgoingOtherPlayers, GAME)
 
 		outGoingYou := assignSlammableCards(PLAYER)
-		outGoingYou = assignYourFailedSlams(PLAYER)
+		outGoingYou = assignYourFailedSlams(outGoingYou)
 		if myTurn {
 			outGoingYou = assignSwaps(PLAYER)
 		}
@@ -120,11 +122,11 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 
 		outGoingYou := assignSlammableCards(PLAYER)
 		if myTurn && GAME.KingIndicator {
-			outGoingYou = assignKingPeekable(PLAYER)
-			outGoingYou = assignKingPeeked(PLAYER)
+			outGoingYou = assignKingPeekable(outGoingYou)
+			outGoingYou = assignKingPeeked(outGoingYou)
 		}
 		outGoingYou = assignYourQueenSwapped(outGoingYou)
-		outGoingYou = assignYourFailedSlams(PLAYER)
+		outGoingYou = assignYourFailedSlams(outGoingYou)
 		outGoingYou.TurnIndicator = myTurn
 
 		return models.OutgoingGameData{
@@ -158,7 +160,7 @@ func GetPlayerGameData(GAME models.GameData, PLAYER models.Player) (models.Outgo
 		}
 
 		outGoingYou := assignSlammableCards(PLAYER)
-		outGoingYou = assignYourFailedSlams(PLAYER)
+		outGoingYou = assignYourFailedSlams(outGoingYou)
 		outGoingYou.TurnIndicator = myTurn
 		if myTurn {
 			outGoingYou = assignYouQueenSelectableAndUnSelectable(outGoingYou, GAME)

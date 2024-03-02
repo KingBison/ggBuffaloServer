@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Card struct {
 	Suit    Suit   `json:"suit"`
 	Number  Number `json:"number"`
@@ -28,6 +30,13 @@ type Card struct {
 	QueenSwapped  bool `json:"queenSwapped"`
 
 	QueenUnSelectable bool `json:"queenUnSelectable"`
+
+	// Animation Flags
+	PeekAni    bool      `json:"peekAni"`
+	PeekTicker time.Time `json:"peekTicker"`
+
+	UnPeekAni    bool      `json:"unPeekAni"`
+	UnPeekTicker time.Time `json:"unPeekTicker"`
 }
 
 type Suit struct {
