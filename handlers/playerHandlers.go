@@ -11,10 +11,8 @@ func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 		params := r.URL.Query()
 
 		gameId := params.Get("gameId")
-
 		name := params.Get("name")
 		color := params.Get("color")
-
 		password := params.Get("password")
 
 		if name == "" || color == "" || gameId == "" {
@@ -25,6 +23,11 @@ func HandlePlayerEntry(GAMES *[]models.GameData) http.HandlerFunc {
 
 		for i, game := range *GAMES {
 			if game.GameId == gameId {
+				if game.Active {
+					w.WriteHeader(500)
+					w.Write([]byte("unable to join game, game is already active"))
+					return
+				}
 				for k, player := range game.Players {
 					if player.Name == name {
 						(*GAMES)[i].Players[k].Color = color
